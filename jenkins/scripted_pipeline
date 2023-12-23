@@ -1,0 +1,16 @@
+
+node {                      /* node ('nodename')*/
+    stage('vcs') {
+        git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
+    }
+    stage('build') {
+        sh '/usr/share/maven/apache-maven-3.9.4/bin/mvn package'
+    }
+    stage('test') {
+        junit '**/surefire-reports/TEST-*.xml'
+    }
+    stage('artifact') {
+        archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+    }
+}
+
